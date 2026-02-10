@@ -34,8 +34,16 @@ def decode_review(encoded_review):
 
 def preprocess_text(text):
     words = text.lower().split()
-    encoded_review = [word_index.get(word, 2) + 3 for word in words]
-    padded_review = sequence.pad_sequences([encoded_review], maxlen=500)
+    encoded_review = []
+    for word in words:
+        if word in word_index:
+            index = word_index[word] + 3
+            if index > 10000:
+                index = 2
+        else:
+            index = 2 
+        encoded_review.append(index)
+    padded_review = sequence.pad_sequences([encoded_review], maxlen=250)
     return padded_review
 
 ## Streamlit app
